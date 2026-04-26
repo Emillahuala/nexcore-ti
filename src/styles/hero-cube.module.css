@@ -1,0 +1,193 @@
+/* ═══════════════════════════════════════════════════════════
+   HERO 3D SCENE — CSS @keyframes only, no JS rAF loops
+   Ported 1:1 from the vanilla style_3d.css implementation
+═══════════════════════════════════════════════════════════ */
+
+.heroScene {
+  position: absolute;
+  right: -40px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 420px;
+  height: 420px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.sceneFloat {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: sceneBob 6s ease-in-out infinite;
+}
+
+.sceneMouse {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: perspective(800px) rotateX(var(--smx, 0deg)) rotateY(var(--smy, 0deg));
+  transition: transform 0.1s linear;
+  transform-style: preserve-3d;
+}
+
+/* ── Cube shapes ─────────────────────────────────────── */
+.geoOuter,
+.geoInner,
+.geoMicro {
+  position: absolute;
+  transform-style: preserve-3d;
+}
+
+.geoOuter {
+  width: 180px;
+  height: 180px;
+  animation: spinOuter 18s linear infinite;
+}
+.geoInner {
+  width: 110px;
+  height: 110px;
+  animation: spinInner 12s linear infinite reverse;
+}
+.geoMicro {
+  width: 60px;
+  height: 60px;
+  animation: spinMicro 7s linear infinite;
+}
+
+/* Cube faces */
+.geoFace {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid rgba(46,138,208,.5);
+  background: rgba(46,138,208,.04);
+  backface-visibility: visible;
+}
+
+/* Outer cube faces */
+.geoOuter .geoFace:nth-child(1) { transform: rotateY(0deg)   translateZ(90px); }
+.geoOuter .geoFace:nth-child(2) { transform: rotateY(90deg)  translateZ(90px); }
+.geoOuter .geoFace:nth-child(3) { transform: rotateY(180deg) translateZ(90px); }
+.geoOuter .geoFace:nth-child(4) { transform: rotateY(270deg) translateZ(90px); }
+.geoOuter .geoFace:nth-child(5) { transform: rotateX(90deg)  translateZ(90px); }
+.geoOuter .geoFace:nth-child(6) { transform: rotateX(-90deg) translateZ(90px); }
+
+/* Inner cube faces */
+.geoInner .geoFace:nth-child(1) { transform: rotateY(0deg)   translateZ(55px); border-color: rgba(110,207,209,.6); }
+.geoInner .geoFace:nth-child(2) { transform: rotateY(90deg)  translateZ(55px); border-color: rgba(110,207,209,.6); }
+.geoInner .geoFace:nth-child(3) { transform: rotateY(180deg) translateZ(55px); border-color: rgba(110,207,209,.6); }
+.geoInner .geoFace:nth-child(4) { transform: rotateY(270deg) translateZ(55px); border-color: rgba(110,207,209,.6); }
+.geoInner .geoFace:nth-child(5) { transform: rotateX(90deg)  translateZ(55px); border-color: rgba(110,207,209,.6); }
+.geoInner .geoFace:nth-child(6) { transform: rotateX(-90deg) translateZ(55px); border-color: rgba(110,207,209,.6); }
+
+/* Micro cube faces */
+.geoMicro .geoFace:nth-child(1) { transform: rotateY(0deg)   translateZ(30px); border-color: rgba(255,255,255,.4); background: rgba(110,207,209,.06); }
+.geoMicro .geoFace:nth-child(2) { transform: rotateY(90deg)  translateZ(30px); border-color: rgba(255,255,255,.4); background: rgba(110,207,209,.06); }
+.geoMicro .geoFace:nth-child(3) { transform: rotateY(180deg) translateZ(30px); border-color: rgba(255,255,255,.4); background: rgba(110,207,209,.06); }
+.geoMicro .geoFace:nth-child(4) { transform: rotateY(270deg) translateZ(30px); border-color: rgba(255,255,255,.4); background: rgba(110,207,209,.06); }
+.geoMicro .geoFace:nth-child(5) { transform: rotateX(90deg)  translateZ(30px); border-color: rgba(255,255,255,.4); background: rgba(110,207,209,.06); }
+.geoMicro .geoFace:nth-child(6) { transform: rotateX(-90deg) translateZ(30px); border-color: rgba(255,255,255,.4); background: rgba(110,207,209,.06); }
+
+/* ── Orbital rings ───────────────────────────────────── */
+.geoRing {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(46,138,208,.3);
+  transform-style: preserve-3d;
+}
+.geoRing1 { width: 260px; height: 260px; animation: ring1 20s linear infinite; }
+.geoRing2 { width: 320px; height: 320px; animation: ring2 28s linear infinite reverse; border-color: rgba(110,207,209,.2); }
+.geoRing3 { width: 380px; height: 380px; animation: ring3 36s linear infinite; border-color: rgba(46,138,208,.15); }
+
+/* ── Core ────────────────────────────────────────────── */
+.geoCore {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #6ECFD1 0%, #2E8AD0 50%, transparent 100%);
+  animation: corePulse 3s ease-in-out infinite;
+  box-shadow: 0 0 20px rgba(110,207,209,.8), 0 0 40px rgba(46,138,208,.4);
+}
+
+/* ── Scan beams ──────────────────────────────────────── */
+.geoBeam {
+  position: absolute;
+  background: linear-gradient(90deg, transparent 0%, rgba(46,138,208,.4) 50%, transparent 100%);
+  animation: beamPulse 4s ease-in-out infinite;
+}
+.geoBeamH { width: 340px; height: 1px; }
+.geoBeamV { width: 1px; height: 340px; animation-delay: 2s; }
+
+/* ── Keyframes ───────────────────────────────────────── */
+@keyframes sceneBob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-18px); }
+}
+
+@keyframes spinOuter {
+  from { transform: rotateX(15deg) rotateY(0deg); }
+  to   { transform: rotateX(15deg) rotateY(360deg); }
+}
+
+@keyframes spinInner {
+  from { transform: rotateX(0deg) rotateY(0deg) rotateZ(20deg); }
+  to   { transform: rotateX(360deg) rotateY(180deg) rotateZ(20deg); }
+}
+
+@keyframes spinMicro {
+  from { transform: rotateX(30deg) rotateY(0deg) rotateZ(0deg); }
+  to   { transform: rotateX(30deg) rotateY(0deg) rotateZ(360deg); }
+}
+
+@keyframes ring1 {
+  from { transform: rotateX(70deg) rotateZ(0deg); }
+  to   { transform: rotateX(70deg) rotateZ(360deg); }
+}
+
+@keyframes ring2 {
+  from { transform: rotateX(40deg) rotateZ(0deg); }
+  to   { transform: rotateX(40deg) rotateZ(360deg); }
+}
+
+@keyframes ring3 {
+  from { transform: rotateX(20deg) rotateY(30deg) rotateZ(0deg); }
+  to   { transform: rotateX(20deg) rotateY(30deg) rotateZ(360deg); }
+}
+
+@keyframes corePulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.5); opacity: 0.7; }
+}
+
+@keyframes beamPulse {
+  0%, 100% { opacity: 0; transform: scaleX(0.6); }
+  50%       { opacity: 1; transform: scaleX(1); }
+}
+
+/* ── Reduced motion override ─────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .sceneFloat,
+  .geoOuter,
+  .geoInner,
+  .geoMicro,
+  .geoRing1,
+  .geoRing2,
+  .geoRing3,
+  .geoCore,
+  .geoBeam {
+    animation: none !important;
+  }
+}
+
+/* ── Responsive ──────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .heroScene { width: 340px; height: 340px; right: -20px; opacity: 0.7; }
+}
+@media (max-width: 900px) {
+  .heroScene { display: none; }
+}
