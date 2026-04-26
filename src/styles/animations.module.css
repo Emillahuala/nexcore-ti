@@ -1,0 +1,44 @@
+/* ── Misc CSS animations ─────────────────────────────────── */
+
+.badgeBob {
+  animation: badgeBob 5s ease-in-out infinite;
+}
+
+.pulseDot {
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+.scrollBob {
+  animation: scrollBob 2s ease-in-out infinite;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* ── Keyframes ───────────────────────────────────────────── */
+@keyframes badgeBob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-5px); }
+}
+
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes scrollBob {
+  0%, 100% { transform: translateY(0) scaleY(1); opacity: 0.6; }
+  50%       { transform: translateY(6px) scaleY(0.7); opacity: 1; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .badgeBob, .pulseDot, .scrollBob, .spinner {
+    animation: none !important;
+  }
+}

@@ -1,0 +1,36 @@
+/* ── Card tilt — CSS custom properties, no rAF ──────────── */
+.tiltCard {
+  --rx: 0deg;
+  --ry: 0deg;
+  position: relative;
+  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 0.12s ease-out, border-color 0.25s, box-shadow 0.25s;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.tiltGlare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at var(--gx, 50%) var(--gy, 50%),
+    rgba(255, 255, 255, 0.12) 0%,
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.25s;
+  z-index: 1;
+}
+
+.tiltCard:hover .tiltGlare {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tiltCard {
+    transform: none !important;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+}
